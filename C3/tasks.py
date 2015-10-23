@@ -2,9 +2,10 @@ from celery import Celery
 import json
 from collections import Counter
 
-#app = Celery('tasks', broker='amqp://guest@localhost//')
 app = Celery('tasks', backend='rpc://', broker='amqp://')
-#app = Celery('tasks', backend='redis://localhost', broker='amqp://')
+
+
+
 
 @app.task
 def getJson():
@@ -13,9 +14,6 @@ def getJson():
     tmp = runme.delay(content)
     return tmp
 
-
-# INPUT = list 
-# Varje rad motsvarar en array. varannat.
 @app.task
 def runme(Jdata):
     tmp = Counter()
@@ -33,4 +31,29 @@ def manageRow(item):
         result  = Counter(data['text'].split())
     return result
 
-#runme(getJson())
+#
+#
+#
+
+import os
+from sys import argv
+import time
+from novaclient.client import Client
+import uuid
+import swiftclient.client
+
+config = {'username':os.environ['OS_USERNAME'],
+          'api_key':os.environ['OS_PASSWORD'],
+          'project_id':os.environ['OS_TENANT_NAME'],
+          'auth_url':os.environ['OS_AUTH_URL']}
+
+nc = Client('2',**config)
+
+config = {'user':os.environ['OS_USERNAME'], 
+          'key':os.environ['OS_PASSWORD'],
+          'tenant_name':os.environ['OS_TENANT_NAME'],
+          'authurl':os.environ['OS_AUTH_URL']}
+
+conn = swiftclient.client.Connection(auth_version=2, **config)
+
+a = conn.get_object("tweets", 'tweets_0.txt')
