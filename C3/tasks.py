@@ -38,7 +38,6 @@ def manageRow(item):
 import os
 from sys import argv
 import time
-from novaclient.client import Client
 import uuid
 import swiftclient.client
 
@@ -57,3 +56,4 @@ config = {'user':os.environ['OS_USERNAME'],
 conn = swiftclient.client.Connection(auth_version=2, **config)
 
 a = conn.get_object("tweets", 'tweets_0.txt')
+
