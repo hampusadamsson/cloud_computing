@@ -8,11 +8,9 @@ app = Celery('tasks', backend='rpc://', broker='amqp://')
 
 
 @app.task
-def getJson():
-    with open("/home/hampus/skola/CloudComputing/FilesFromAssignments2015-09-15/C3/localSolution/tweets.txt") as f:
-        content = f.readlines()
-    tmp = runme.delay(content)
-    return tmp
+def getJson(data):
+    tmp = runme(data)
+    return tmp.get()
 
 @app.task
 def runme(Jdata):
@@ -49,4 +47,3 @@ config = {'user':os.environ['OS_USERNAME'],
 conn = swiftclient.client.Connection(auth_version=2, **config)
 
 a = conn.get_object("tweets", 'tweets_0.txt')
-
