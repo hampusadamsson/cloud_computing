@@ -41,13 +41,6 @@ import time
 import uuid
 import swiftclient.client
 
-config = {'username':os.environ['OS_USERNAME'],
-          'api_key':os.environ['OS_PASSWORD'],
-          'project_id':os.environ['OS_TENANT_NAME'],
-          'auth_url':os.environ['OS_AUTH_URL']}
-
-nc = Client('2',**config)
-
 config = {'user':os.environ['OS_USERNAME'], 
           'key':os.environ['OS_PASSWORD'],
           'tenant_name':os.environ['OS_TENANT_NAME'],
