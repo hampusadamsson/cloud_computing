@@ -1,0 +1,19 @@
+#Cloud-config
+
+package_update: true
+package_upgrade: true
+
+
+packages:
+    - git
+    - python-pip
+    - rabbitmq-server
+
+runcmd:
+    - pip install flower
+    - pip install celery
+    - git clone https://github.com/andrewaziz/CloudComputingNacaAirfoil.git /home/ubuntu/test
+    - pip install -r /home/ubuntu/test/requirements.txt
+    - cd /home/ubuntu/test; python run.py &
+    - cd /home/ubuntu/test; celery worker -A app.celery --concurrency=2 &
+    - cd /home/ubuntu/test; celery -A app.celery flower --port=5001
