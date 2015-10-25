@@ -6,17 +6,18 @@ from sys import argv
 import time
 import uuid
 import swiftclient.client    
+import StringIO
 
 app = Celery('tasks', backend='rpc://', broker='amqp://')
 
-@app.task
-def runme(Jdata):
-    tmp = Counter()
+# @app.task
+# def runme(Jdata):
+#     tmp = Counter()
 
-    for item in Jdata:
-        if(1<len(item)): # Removes Empty rows
-            tmp = tmp + manageRow(item)            
-    return(tmp)
+#     for item in Jdata:
+#         if(1<len(item)): # Removes Empty rows
+#             tmp = tmp + manageRow(item)            
+#     return(tmp)
 
 @app.task
 def manageRow(item):
@@ -29,6 +30,17 @@ def manageRow(item):
 #
 # 
 #
+@app.task
+def splitit(data):
+    result = Counter()
+    ans = "start"
+    buf = StringIO.StringIO(data)
+
+    while(len(ans)>0):
+        ans = buf.readline()
+        if(len(ans)>1):
+            result = result + manageRow(ans)
+    return result
 
 @app.task
 def go():
@@ -44,5 +56,5 @@ def go():
           'authurl':os.environ['OS_AUTH_URL']}
     
     conn = swiftclient.client.Connection(auth_version=2, **config)
-#return(conn.get_object("tweets", 'tweets_0.txt'))
     return(conn.get_object("adams", 'tweets1.txt'))
+    

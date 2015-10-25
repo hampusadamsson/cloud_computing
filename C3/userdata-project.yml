@@ -9,11 +9,13 @@ packages:
     - python-pip
     - rabbitmq-server
     - python-keystoneclient
+    - python-dev
 
 runcmd:
     - pip install flower
     - pip install celery
     - pip install python-swiftclient
+    - pip install python-novaclient
     - cd /home/ubuntu/; git clone https://github.com/hampusadamsson/cloud_computing.git
     - cd /home/ubuntu/cloud_computing/C3; celery worker -A tasks &
     - cd /home/ubuntu/cloud_computing/C3; celery -A tasks flower --port=5001
