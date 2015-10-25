@@ -1,16 +1,14 @@
 from celery import Celery
 import json
 from collections import Counter
+import os
+from sys import argv
+import time
+import uuid
+import swiftclient.client
+    
 
 app = Celery('tasks', backend='rpc://', broker='amqp://')
-
-
-
-
-@app.task
-def getJson(data):
-    tmp = runme(data)
-    return tmp.get()
 
 @app.task
 def runme(Jdata):
@@ -18,7 +16,7 @@ def runme(Jdata):
 
     for item in Jdata:
         if(1<len(item)): # Removes Empty rows
-            tmp = tmp + manageRow.delay(item)            
+            tmp = tmp + manageRow(item)            
     return(tmp)
 
 @app.task
@@ -30,20 +28,18 @@ def manageRow(item):
     return result
 
 #
-#
+# 
 #
 
-import os
-from sys import argv
-import time
-import uuid
-import swiftclient.client
 
-config = {'user':os.environ['OS_USERNAME'], 
+@app.task
+def go():
+    config = {'user':os.environ['OS_USERNAME'], 
           'key':os.environ['OS_PASSWORD'],
           'tenant_name':os.environ['OS_TENANT_NAME'],
           'authurl':os.environ['OS_AUTH_URL']}
 
-conn = swiftclient.client.Connection(auth_version=2, **config)
+    conn = swiftclient.client.Connection(auth_version=2, **config)
 
-a = conn.get_object("tweets", 'tweets_0.txt')
+    return(conn.get_object("tweets", 'tweets_0.txt'))
+    
