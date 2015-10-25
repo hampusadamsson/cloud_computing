@@ -5,8 +5,7 @@ import os
 from sys import argv
 import time
 import uuid
-import swiftclient.client
-    
+import swiftclient.client    
 
 app = Celery('tasks', backend='rpc://', broker='amqp://')
 
@@ -31,15 +30,19 @@ def manageRow(item):
 # 
 #
 
-
 @app.task
 def go():
+    import os
+    from sys import argv
+    import time
+    from novaclient.client import Client
+    import uuid
+    import swiftclient.client
     config = {'user':os.environ['OS_USERNAME'], 
           'key':os.environ['OS_PASSWORD'],
           'tenant_name':os.environ['OS_TENANT_NAME'],
           'authurl':os.environ['OS_AUTH_URL']}
-
-    conn = swiftclient.client.Connection(auth_version=2, **config)
-
-    return(conn.get_object("tweets", 'tweets_0.txt'))
     
+    conn = swiftclient.client.Connection(auth_version=2, **config)
+#return(conn.get_object("tweets", 'tweets_0.txt'))
+    return(conn.get_object("adams", 'tweets1.txt'))
