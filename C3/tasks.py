@@ -22,11 +22,20 @@ app = Celery('tasks', backend='rpc://', broker='amqp://')
 
 @app.task
 def manageRow(item):
+    prons = Counter()
     result = Counter()
     data = json.loads(item)
     if('retweeted_status' not in data.keys()): #Removes retweets
         result  = Counter(data['text'].split())
-    return result
+        prons = prons + result['han']
+        prons = prons + result['hon']
+        prons = prons + result['den']
+        prons = prons + result['det']
+        prons = prons + result['denna']
+        prons = prons + result['denne']
+        prons = prons + result['hen']
+
+    return prons
 
 #
 # 
