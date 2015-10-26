@@ -15,5 +15,4 @@ celery = Celery(app.name, backend=app.config['CELERY_RESULT_BACKEND'],
 
 celery.conf.update(app.config)
 
-
 from app import views

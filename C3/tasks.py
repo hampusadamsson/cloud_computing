@@ -28,7 +28,7 @@ def manageRow(item):
     if('retweeted_status' not in data.keys()): #Removes retweets
         result  = Counter(data['text'].split())
         
-        prons = Counter({'han':result['han'],'hon':result['hon'],'den':result['det'],'denna':result['denna'],'denne':result['denne'],'hen':result['hen']})
+        prons = Counter({'han':result['han'],'hon':result['hon'],'den':result['den'],'det':result['det'],'denna':result['denna'],'denne':result['denne'],'hen':result['hen']})
         
     return prons
 
