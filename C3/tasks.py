@@ -77,3 +77,6 @@ def go():
         result = result + splitit(data[1])
     return(result)
     
+a = go.delay()
+b = a.get()
+print(b)
