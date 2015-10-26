@@ -7,6 +7,7 @@ import time
 import uuid
 import swiftclient.client    
 import StringIO
+import os
 
 app = Celery('tasks', backend='rpc://', broker='amqp://')
 
