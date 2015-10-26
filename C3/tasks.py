@@ -27,14 +27,9 @@ def manageRow(item):
     data = json.loads(item)
     if('retweeted_status' not in data.keys()): #Removes retweets
         result  = Counter(data['text'].split())
-        prons = prons + result['han']
-        prons = prons + result['hon']
-        prons = prons + result['den']
-        prons = prons + result['det']
-        prons = prons + result['denna']
-        prons = prons + result['denne']
-        prons = prons + result['hen']
-
+        
+        prons = Counter({'han':result['han'],'hon':result['hon'],'den':result['det'],'denna':result['denna'],'denne':result['denne'],'hen':result['hen']})
+        
     return prons
 
 #
