@@ -51,14 +51,20 @@ def go():
     from novaclient.client import Client
     import uuid
     import swiftclient.client
+    result = Counter()
+
     config = {'user':os.environ['OS_USERNAME'], 
           'key':os.environ['OS_PASSWORD'],
           'tenant_name':os.environ['OS_TENANT_NAME'],
           'authurl':os.environ['OS_AUTH_URL']}
     
     conn = swiftclient.client.Connection(auth_version=2, **config)
-    data = conn.get_object("adams", 'tweets1.txt')
-    result = splitit(data[1])
 
+    container_name = "adams"
+    tmp = conn.get_container(container_name)
+    for num in range(0,len(tmp[1])):
+        item = tmp[1][num]['name']
+        data = conn.get_object(container_name, item)
+        result = result + splitit(data[1])
     return(result)
     
