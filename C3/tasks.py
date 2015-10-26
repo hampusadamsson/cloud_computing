@@ -56,5 +56,8 @@ def go():
           'authurl':os.environ['OS_AUTH_URL']}
     
     conn = swiftclient.client.Connection(auth_version=2, **config)
-    return(conn.get_object("adams", 'tweets1.txt'))
+    data = conn.get_object("adams", 'tweets1.txt')
+    result = splitit(data[1])
+
+    return(result)
     
